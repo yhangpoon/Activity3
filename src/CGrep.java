@@ -6,7 +6,6 @@
  * @author Yin
  * @author sst8696
  * @author peter
- *
  */
 public class CGrep {
 
