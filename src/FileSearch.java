@@ -26,7 +26,7 @@ public class FileSearch implements Callable<Found> {
 		long lineCount=0;
 		Found result = new Found();
 		Pattern expression = Pattern.compile(patternString);
-		
+		result.setName(currentFile.getName());
 		while((currentLine=reader.readLine())!=null){
 			Matcher matcher = expression.matcher(currentLine);
 			if(matcher.matches()){
