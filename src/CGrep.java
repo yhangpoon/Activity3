@@ -26,10 +26,11 @@ public class CGrep {
         if (args.length > 1) {
             ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
             List<Future<Found>> result = new ArrayList<Future<Found>>();
+            String pattern = args[0].toString();
             for (int i = 1; i < args.length; i++) {
                 String fileName = args[i].toString();
                 File file = new File(fileName);
-                Callable<Found> searcher = new FileSearch(file);
+                Callable<Found> searcher = new FileSearch(file, pattern);
                 Future<Found> submit = executor.submit(searcher);
                 result.add(submit);
             }
