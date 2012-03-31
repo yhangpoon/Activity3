@@ -59,9 +59,24 @@ public class Found {
     }
     
     /**
+     * Checks to see if this file has any occurrences of the pattern
      * 
+     * @return true if the size of the entries list is not zero
+     */
+    public boolean hasFoundOccurence(){
+    	return this.entries.size() != 0;
+    }
+    
+    /**
+     * Generates a string to be printed to the screen
+     * 
+     * @return the string to be printed
      */
     public String toString(){
-    	return name + entries.toString();
+    	String ret = name + "/n/t";
+    	for (int i=0; i<entries.size(); i++){
+    		ret = ret + " " + entries.get(i) + "/n/t";
+    	}
+    	return ret;
     }
 }
