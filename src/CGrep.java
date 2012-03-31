@@ -2,6 +2,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -35,17 +36,17 @@ public class CGrep {
                 result.add(submit);
             }
 
-            long sum = 0;
-            System.out.println(result.size());
             // Now retrieve the result
             for (Future<Found> future : result) {
-                /*
-                 * try { sum += future.get(); } catch (InterruptedException e) {
-                 * e.printStackTrace(); } catch (ExecutionException e) {
-                 * e.printStackTrace(); }
-                 */
+                try {
+                    System.out.println(future.get());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
             }
-            System.out.println(sum);
+
             executor.shutdown();
         }
     }
