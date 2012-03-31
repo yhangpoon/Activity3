@@ -24,7 +24,7 @@ public class CGrep {
      */
     public static void main(String[] args) {
 
-        if (args.length > 1) {
+        if (args.length >= 1) {
             ExecutorService executor = Executors
                     .newFixedThreadPool(THREADPOOLAMOUNT);
 
@@ -38,11 +38,11 @@ public class CGrep {
 
                 if (file.exists()) {
                     try {
-						searcher = new FileSearch(file, pattern);
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+                        searcher = new FileSearch(file, pattern);
+                    } catch (FileNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                     result = executor.submit(searcher);
                 } else {
                     InputStream input = System.in;
