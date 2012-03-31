@@ -37,7 +37,12 @@ public class CGrep {
                 Future<Found> result = null;
 
                 if (file.exists()) {
-                    searcher = new FileSearch(file, pattern);
+                    try {
+						searcher = new FileSearch(file, pattern);
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                     result = executor.submit(searcher);
                 } else {
                     InputStream input = System.in;
@@ -50,8 +55,6 @@ public class CGrep {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
             }
