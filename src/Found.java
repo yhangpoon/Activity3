@@ -73,9 +73,9 @@ public class Found {
      * @return the string to be printed
      */
     public String toString(){
-    	String ret = name + "/n/t";
+    	String ret = name + "\n\t";
     	for (int i=0; i<entries.size(); i++){
-    		ret = ret + " " + entries.get(i) + "/n/t";
+    		ret = ret + " " + entries.get(i) + "\n\t";
     	}
     	return ret;
     }
