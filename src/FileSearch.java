@@ -6,8 +6,6 @@ import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
 public class FileSearch implements Callable<Found> {
 	
 	private final File currentFile;
@@ -27,13 +25,15 @@ public class FileSearch implements Callable<Found> {
 		Found result = new Found();
 		Pattern expression = Pattern.compile(patternString);
 		result.setName(currentFile.getName());
+		
 		while((currentLine=reader.readLine())!=null){
 			Matcher matcher = expression.matcher(currentLine);
-			if(matcher.matches()){
-				list.add(lineCount + currentLine);
+			if(matcher.find()){
+				list.add(lineCount +" "+ currentLine);
 			}
 			lineCount++;
 		}
+		result.setEntries(list);
 		
 		
 		
