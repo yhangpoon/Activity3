@@ -1,6 +1,6 @@
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -14,7 +14,7 @@ import java.util.concurrent.Future;
  */
 public class CGrep {
 
-    private static final int NTHREDS = 10;
+    private static final int THREADPOOLAMOUNT = 3;
 
     /**
      * Main method
@@ -25,24 +25,33 @@ public class CGrep {
     public static void main(String[] args) {
 
         if (args.length > 1) {
-            ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
-            List<Future<Found>> result = new ArrayList<Future<Found>>();
+            ExecutorService executor = Executors
+                    .newFixedThreadPool(THREADPOOLAMOUNT);
+
             String pattern = args[0].toString();
             for (int i = 1; i < args.length; i++) {
-                String fileName = args[i].toString();
-                File file = new File(fileName);
-                Callable<Found> searcher = new FileSearch(file, pattern);
-                Future<Found> submit = executor.submit(searcher);
-                result.add(submit);
-            }
+                String argument = args[i].toString();
+                File file = new File(argument);
 
-            // Now retrieve the result
-            for (Future<Found> future : result) {
+                Callable<Found> searcher = null;
+                Future<Found> result = null;
+
+                if (file.exists()) {
+                    searcher = new FileSearch(file, pattern);
+                    result = executor.submit(searcher);
+                } else {
+                    InputStream input = System.in;
+                    searcher = new FileSearch(input, pattern);
+                    result = executor.submit(searcher);
+                }
+
                 try {
-                    System.out.println(future.get());
+                    System.out.println(result.get());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
             }
