@@ -57,5 +57,11 @@ public class Found {
     public void setEntries(List<String> entries) {
         this.entries = entries;
     }
-
+    
+    /**
+     * 
+     */
+    public String toString(){
+    	return name + entries.toString();
+    }
 }
