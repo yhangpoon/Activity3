@@ -14,6 +14,9 @@ import java.util.concurrent.Future;
  */
 public class CGrep {
 
+    /**
+     * Pool Size
+     */
     private static final int THREADPOOLAMOUNT = 3;
 
     /**
@@ -55,6 +58,10 @@ public class CGrep {
             InputStream input = System.in;
             Callable<Found> searcher = new FileSearch(input, pattern);
             Future<Found> result = executor.submit(searcher);
+        } else {
+            System.out.println("Usage: java CGrep [pattern] [file...]");
+            System.out.println("OR");
+            System.out.println("Usage: java CGrep [pattern]");
         }
 
         executor.shutdown();
