@@ -58,6 +58,13 @@ public class CGrep {
             InputStream input = System.in;
             Callable<Found> searcher = new FileSearch(input, pattern);
             Future<Found> result = executor.submit(searcher);
+            try {
+                System.out.println(result.get());
+            } catch (InterruptedException e) {
+                System.err.print(e.toString());
+            } catch (ExecutionException e) {
+                System.err.print(e.toString());
+            }
         } else {
             System.out.println("Usage: java CGrep [pattern] [file...]");
             System.out.println("OR");
