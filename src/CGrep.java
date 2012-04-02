@@ -15,12 +15,12 @@ import java.util.concurrent.Future;
 public class CGrep {
 
     /**
-     * Pool Size
+     * Thread Pool Size
      */
     private static final int THREADPOOLAMOUNT = 3;
 
     /**
-     * Main method
+     * Main method to start the program
      * 
      * @param args
      *            - Input arguments
@@ -32,12 +32,14 @@ public class CGrep {
 
         String pattern = args[0].toString();
 
+        // Check argument length
         if (args.length > 1) {
 
             for (int i = 1; i < args.length; i++) {
                 String argument = args[i].toString();
                 File file = new File(argument);
 
+                // Search File
                 if (file.exists()) {
                     try {
                         Callable<Found> searcher = new FileSearch(file,
