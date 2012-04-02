@@ -24,42 +24,39 @@ public class CGrep {
      */
     public static void main(String[] args) {
 
-        if (args.length >= 1) {
-            ExecutorService executor = Executors
-                    .newFixedThreadPool(THREADPOOLAMOUNT);
+        ExecutorService executor = Executors
+                .newFixedThreadPool(THREADPOOLAMOUNT);
 
-            String pattern = args[0].toString();
+        String pattern = args[0].toString();
+
+        if (args.length > 1) {
+
             for (int i = 1; i < args.length; i++) {
                 String argument = args[i].toString();
                 File file = new File(argument);
 
-                Callable<Found> searcher = null;
-                Future<Found> result = null;
-
                 if (file.exists()) {
                     try {
-                        searcher = new FileSearch(file, pattern);
+                        Callable<Found> searcher = new FileSearch(file,
+                                pattern);
+                        Future<Found> result = executor.submit(searcher);
+                        System.out.println(result.get());
                     } catch (FileNotFoundException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        System.err.print(e.toString());
+                    } catch (InterruptedException e) {
+                        System.err.print(e.toString());
+                    } catch (ExecutionException e) {
+                        System.err.print(e.toString());
                     }
-                    result = executor.submit(searcher);
-                } else {
-                    InputStream input = System.in;
-                    searcher = new FileSearch(input, pattern);
-                    result = executor.submit(searcher);
-                }
-
-                try {
-                    System.out.println(result.get());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
                 }
             }
 
-            executor.shutdown();
+        } else if (args.length == 1) {
+            InputStream input = System.in;
+            Callable<Found> searcher = new FileSearch(input, pattern);
+            Future<Found> result = executor.submit(searcher);
         }
+
+        executor.shutdown();
     }
 }
