@@ -8,6 +8,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
+ * Main class to start and run the program.
+ * 
  * @author Yin
  * @author sst8696
  * @author peter
@@ -15,12 +17,12 @@ import java.util.concurrent.Future;
 public class CGrep {
 
     /**
-     * Thread Pool Size
+     * Thread Pool Size.
      */
     private static final int THREADPOOLAMOUNT = 3;
 
     /**
-     * Main method to start the program
+     * Main method to start the program.
      * 
      * @param args
      *            - Input arguments

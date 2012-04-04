@@ -5,23 +5,38 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * FileSearch looks for the pattern in the given input stream.
+ * 
  * @author Yin
  * @author sst8696
  * @author peter
  */
 public class FileSearch implements Callable<Found> {
 
+    /**
+     * Input stream.
+     */
     private final InputStream currentStream;
+
+    /**
+     * The pattern we are searching for.
+     */
     private final String patternString;
-    private final ArrayList<String> list = new ArrayList<String>();
+
+    /**
+     * The result stored in a Found object.
+     */
     private final Found result;
 
     /**
+     * Constructor for handling file.
+     * 
      * @param currentFile
      * @param patternString
      * @throws FileNotFoundException
@@ -35,6 +50,8 @@ public class FileSearch implements Callable<Found> {
     }
 
     /**
+     * Constructor for handling standard input.
+     * 
      * @param input
      * @param patternString
      */
@@ -45,15 +62,18 @@ public class FileSearch implements Callable<Found> {
         this.result.setName("-");
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Look for the pattern on the input stream or throws an exception if unable
+     * to do so.
      * 
-     * @see java.util.concurrent.Callable#call()
+     * @return result - Found object with a list of the lines that have the
+     *         pattern
+     * @throw Exception - if unable to compute a result
      */
     @Override
     public Found call() throws Exception {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                currentStream));
+        // Lines with the pattern found
+        List<String> list = new ArrayList<String>();
 
         // The line currently being read in the file.
         String currentLine;
@@ -61,6 +81,8 @@ public class FileSearch implements Callable<Found> {
         // The current line number.
         long lineCount = 0;
 
+        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                currentStream));
         Pattern expression = Pattern.compile(patternString);
 
         while ((currentLine = reader.readLine()) != null) {
